@@ -1,4 +1,4 @@
-# MD Sticky Note
+# DesktopNote
 
 Floating markdown sticky notes for macOS, with Notion-style live preview.
 
