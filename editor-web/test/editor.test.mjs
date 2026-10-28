@@ -196,8 +196,8 @@ test('the caret does not jump into the marker after a click', () => {
 // ── Input rules ─────────────────────────────────────────────────────────────
 
 test('typing "- [] " expands to a real task box', () => {
-  // The note recovered from the old app was full of `- []`, which GFM does not
-  // recognise, so the list rendered as plain text with no checkbox.
+  // GFM does not recognise `- []`, so without the rewrite the list renders as
+  // plain text with no checkbox.
   const view = makeView('- ', 2);
   type(view, '[] ');
   assert.equal(view.state.doc.toString(), '- [ ] ');

@@ -121,7 +121,7 @@ func png(size: CGFloat) -> Data? {
     return rep.representation(using: .png, properties: [:])
 }
 
-let workDir = NSTemporaryDirectory() + "mdstickynote-icon-\(UUID().uuidString)/AppIcon.iconset"
+let workDir = NSTemporaryDirectory() + "desktopnote-icon-\(UUID().uuidString)/AppIcon.iconset"
 try FileManager.default.createDirectory(atPath: workDir, withIntermediateDirectories: true)
 
 // iconutil expects this exact set of names.

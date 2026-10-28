@@ -1,7 +1,7 @@
 import AppKit
 
 @main
-enum StickyNotesApp {
+enum DesktopNoteApp {
     static func main() {
         let app = NSApplication.shared
         let delegate = AppDelegate()
@@ -75,13 +75,13 @@ enum MenuBuilder {
     }
 
     private static func appMenu() -> NSMenuItem {
-        let (item, menu) = submenu("MD Sticky Note")
-        add(menu, "About MD Sticky Note", #selector(NSApplication.orderFrontStandardAboutPanel(_:)))
+        let (item, menu) = submenu("DesktopNote")
+        add(menu, "About DesktopNote", #selector(NSApplication.orderFrontStandardAboutPanel(_:)))
         menu.addItem(.separator())
-        add(menu, "Hide MD Sticky Note", #selector(NSApplication.hide(_:)), "h")
+        add(menu, "Hide DesktopNote", #selector(NSApplication.hide(_:)), "h")
         add(menu, "Hide Others", #selector(NSApplication.hideOtherApplications(_:)), "h", [.command, .option])
         menu.addItem(.separator())
-        add(menu, "Quit MD Sticky Note", #selector(NSApplication.terminate(_:)), "q")
+        add(menu, "Quit DesktopNote", #selector(NSApplication.terminate(_:)), "q")
         return item
     }
 

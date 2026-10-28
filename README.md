@@ -1,9 +1,10 @@
 # DesktopNote
 
-Floating markdown sticky notes for macOS, with Notion-style live preview.
+Floating markdown notes for the macOS desktop, with Notion-style live preview.
 
-Built from scratch, using [jaesuny/markdown-sticky-notes](https://github.com/jaesuny/markdown-sticky-notes)
-as a reference for the overall shape (native shell + CodeMirror in a web view).
+Each note is its own small window that stays on top of your work. You write
+plain markdown, and the formatting shows up right away: headings, checkboxes,
+toggles, code, math. The file on disk is still ordinary markdown.
 
 ## Build and run
 
@@ -11,7 +12,7 @@ Requires macOS 12+, Swift 5.9+, Node 18+.
 
 ```bash
 ./build-app.sh              # editor bundle + Swift + .app
-open build/MDStickyNote.app
+open build/DesktopNote.app
 ```
 
 ```bash
@@ -21,7 +22,7 @@ cd editor-web && npm test   # headless editor tests
 
 ## Typing
 
-Shortcuts fire on the **space**, never before it — `#` and `[]` stay ordinary
+Shortcuts fire on the **space**, never before it, so `#` and `[]` stay ordinary
 text until you commit them.
 
 | You type | You get |
@@ -38,9 +39,9 @@ Markers are hidden once rendered and the caret steps over them, so Backspace at
 the start of a heading turns it back into a paragraph in one keystroke. Links
 are the exception: `[text](url)` shows its URL while the caret is inside it.
 
-**The file stays ordinary markdown.** `### Section` is still `### Section` on
-disk — only the display changes. The one local dialect is that `|` and `>` are
-swapped: other renderers show a toggle as a plain quote.
+`### Section` is still `### Section` on disk; only the display changes. The one
+local dialect is that `|` and `>` are swapped, so other markdown renderers show
+a toggle as a plain quote.
 
 ## Shortcuts
 
@@ -59,45 +60,29 @@ swapped: other renderers show a toggle as a plain quote.
 
 Opacity, colour and pin live in each note's title bar.
 
-Ordered lists renumber themselves: nesting or moving an item closes the gap it
-left behind, in a single undo step.
+Ordered lists renumber themselves. When you nest or move an item, the gap it
+leaves is closed, and one undo reverts the whole change.
 
-Pasting a copied task onto a line that is already a task drops the duplicate
-marker, so you get the text rather than `- [ ] - [ ] text`. Paste onto a plain
-line and the checkbox is created as normal.
+If you paste a copied task onto a line that is already a task, the duplicate
+marker is dropped, so you get the text instead of `- [ ] - [ ] text`.
 
 ## Storage
 
 ```
-~/Library/Application Support/MDStickyNote/
+~/Library/Application Support/DesktopNote/
   notes.json          all notes, human-readable
   backups/            last 40 versions, rotated on every save
 ```
 
-Writes are atomic. A store that fails to parse is set aside as
-`notes.corrupt-<timestamp>.json` rather than overwritten, and the previous
-version of a note is always recoverable from `backups/`.
+Writes are atomic. If the store fails to parse, it is kept as
+`notes.corrupt-<timestamp>.json` instead of being overwritten. Earlier versions
+of every note can be recovered from `backups/`.
 
-Importing from the old app (reads `com.mdstickynotes.plist`, safe to re-run):
+## How it's built
 
-```bash
-./migrate-from-old-app.py
-```
+- **Swift / AppKit** for the windows, menus and storage.
+- **CodeMirror 6 in a WKWebView** for the editor, one web view per note, so
+  notes never share editor state.
+- **Headless tests** run against the real rendering pipeline.
 
-## Notable differences from the reference
-
-- **Task lists work.** The reference found a task's list marker by assuming it
-  sat exactly two characters before `[x]` and read `"- "`, which breaks for
-  `* [ ]`, `1. [x]` and `-   [x]`. Its checkbox also returned `false` from
-  `ignoreEvent()`, letting the editor steal its own click.
-- **One web view per note** instead of a shared one swapped between windows.
-  More memory, but it removes the snapshot, focus and content-overwrite races
-  that approach needs careful sequencing to avoid.
-- **Notes are a JSON file with rolling backups**, not UserDefaults.
-- **Editor split by concern** and covered by headless tests.
-
-Design notes, architecture and gotchas: [CLAUDE.md](CLAUDE.md).
-
-## License
-
-MIT
+Design notes, architecture and gotchas are in [CLAUDE.md](CLAUDE.md).

@@ -2,15 +2,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "StickyNotes",
+    name: "DesktopNote",
     platforms: [.macOS(.v12)],
     products: [
-        .executable(name: "StickyNotes", targets: ["StickyNotes"])
+        .executable(name: "DesktopNote", targets: ["DesktopNote"])
     ],
     targets: [
         .executableTarget(
-            name: "StickyNotes",
-            path: "Sources/StickyNotes",
+            name: "DesktopNote",
+            path: "Sources/DesktopNote",
             resources: [.copy("Resources")],
             swiftSettings: [.unsafeFlags(["-parse-as-library"])]
         )

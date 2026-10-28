@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Builds MDStickyNote.app.
+# Builds DesktopNote.app.
 #
 #   ./build-app.sh            full build (editor bundle + Swift + .app)
 #   ./build-app.sh --skip-js  reuse the existing editor bundle
@@ -8,8 +8,8 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-APP_NAME="MDStickyNote"
-BUNDLE_ID="com.yumin.mdstickynote"
+APP_NAME="DesktopNote"
+BUNDLE_ID="com.yumin.desktopnote"
 VERSION="1.0.0"
 APP_DIR="build/$APP_NAME.app"
 CONTENTS="$APP_DIR/Contents"
@@ -28,12 +28,12 @@ if [[ ! -f editor-web/dist/editor.bundle.js ]]; then
   echo "error: editor-web/dist/editor.bundle.js is missing (run without --skip-js)" >&2
   exit 1
 fi
-cp editor-web/dist/editor.bundle.js Sources/StickyNotes/Resources/Editor/editor.bundle.js
+cp editor-web/dist/editor.bundle.js Sources/DesktopNote/Resources/Editor/editor.bundle.js
 
 # ── 2. App icon ─────────────────────────────────────────────────────────────
-if [[ ! -f Sources/StickyNotes/Resources/AppIcon.icns ]]; then
+if [[ ! -f Sources/DesktopNote/Resources/AppIcon.icns ]]; then
   echo "==> Generating app icon"
-  ./make-icon.swift Sources/StickyNotes/Resources/AppIcon.icns || \
+  ./make-icon.swift Sources/DesktopNote/Resources/AppIcon.icns || \
     echo "    (icon generation skipped)"
 fi
 
@@ -46,8 +46,8 @@ echo "==> Assembling $APP_DIR"
 rm -rf "$APP_DIR"
 mkdir -p "$CONTENTS/MacOS" "$CONTENTS/Resources"
 
-cp ".build/release/StickyNotes" "$CONTENTS/MacOS/$APP_NAME"
-cp -R Sources/StickyNotes/Resources/. "$CONTENTS/Resources/"
+cp ".build/release/DesktopNote" "$CONTENTS/MacOS/$APP_NAME"
+cp -R Sources/DesktopNote/Resources/. "$CONTENTS/Resources/"
 
 cat > "$CONTENTS/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
@@ -56,8 +56,8 @@ cat > "$CONTENTS/Info.plist" <<PLIST
 <dict>
     <key>CFBundleExecutable</key>          <string>$APP_NAME</string>
     <key>CFBundleIdentifier</key>          <string>$BUNDLE_ID</string>
-    <key>CFBundleName</key>                <string>MD Sticky Note</string>
-    <key>CFBundleDisplayName</key>         <string>MD Sticky Note</string>
+    <key>CFBundleName</key>                <string>DesktopNote</string>
+    <key>CFBundleDisplayName</key>         <string>DesktopNote</string>
     <key>CFBundlePackageType</key>         <string>APPL</string>
     <key>CFBundleShortVersionString</key>  <string>$VERSION</string>
     <key>CFBundleVersion</key>             <string>$VERSION</string>

@@ -10,7 +10,7 @@ final class PersistenceManager {
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
-    /// ~/Library/Application Support/MDStickyNote
+    /// ~/Library/Application Support/DesktopNote
     private let directory: URL
     private var storeURL: URL { directory.appendingPathComponent("notes.json") }
     private var backupDirectory: URL { directory.appendingPathComponent("backups", isDirectory: true) }
@@ -26,7 +26,7 @@ final class PersistenceManager {
         return formatter
     }()
 
-    init(directoryName: String = "MDStickyNote") {
+    init(directoryName: String = "DesktopNote") {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Library/Application Support")
         directory = base.appendingPathComponent(directoryName, isDirectory: true)

@@ -7,14 +7,14 @@ Notes for working in this repo.
 ```bash
 ./build-app.sh                # editor bundle -> Swift -> .app
 ./build-app.sh --skip-js      # Swift only (fast; reuses editor-web/dist)
-open build/MDStickyNote.app
+open build/DesktopNote.app
 ```
 
 JS-only iteration, without rebuilding Swift:
 
 ```bash
 cd editor-web && npm run build && \
-  cp dist/editor.bundle.js ../build/MDStickyNote.app/Contents/Resources/Editor/
+  cp dist/editor.bundle.js ../build/DesktopNote.app/Contents/Resources/Editor/
 ```
 
 ## Test
@@ -42,10 +42,9 @@ Native shell + web editor:
 
 ### One web view per note
 
-Deliberate. The reference project shares a single web view across windows and
-swaps bitmap snapshots in and out; it saves memory and costs a long tail of
-ordering bugs (blank windows, lost focus, one note's content overwriting
-another's). Here each `NoteWindowController` owns its web view for its lifetime,
+Deliberate. Sharing a single web view across windows and swapping bitmap
+snapshots in and out saves memory but costs a long tail of ordering bugs (blank
+windows, lost focus, one note's content overwriting another's). Here each `NoteWindowController` owns its web view for its lifetime,
 so there is no cross-note state to sequence.
 
 If memory ever matters, the thing to do is close web views for off-screen
@@ -225,8 +224,8 @@ columns and ordered items at three.
 
 1. **`ignoreEvent()` on interactive widgets must be `true`** (the default).
    Returning `false` asks CodeMirror to *also* handle the widget's events, which
-   places the caret inside the replaced range and unfolds the decoration. This is
-   what broke the reference app's checkbox.
+   places the caret inside the replaced range and unfolds the decoration — a
+   checkbox built that way steals its own click.
 2. **Never compute a markdown construct's extent from node offsets alone.** The
    list mark and the task box are separate nodes with arbitrary whitespace
    between them; `node.from - 2` only works for `- [x]`. Derive ranges from the
@@ -295,8 +294,8 @@ columns and ordered items at three.
 ## Debugging
 
 - Swift: `NSLog` output — run the binary directly to see it:
-  `./build/MDStickyNote.app/Contents/MacOS/MDStickyNote`
+  `./build/DesktopNote.app/Contents/MacOS/DesktopNote`
 - JS: `console.log` is forwarded to the Swift log.
-- DOM: Safari > Develop > [Mac] > MDStickyNote (the web view sets
+- DOM: Safari > Develop > [Mac] > DesktopNote (the web view sets
   `isInspectable = true`).
 - Syntax tree: run `dumpTree()` in the Safari console.
