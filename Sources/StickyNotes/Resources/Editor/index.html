@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Note</title>
+<style>
+  :root {
+    --paper: #FFF7C2;
+    --accent: #A9821B;
+    --ink: #24262b;
+    /* Overwritten per note by window.setFontSize(). Everything else sizes in
+       em, so headings and code scale with it. */
+    --editor-font-size: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    /* The window itself paints the paper colour; keeping the page transparent
+       lets the native rounded corners and opacity show through unaltered. */
+    background: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  #editor-container { width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+  <div id="editor-container"></div>
+  <script src="editor.bundle.js"></script>
+</body>
+</html>
